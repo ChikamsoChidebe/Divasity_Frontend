@@ -2,9 +2,8 @@ import { useState, useRef } from "react";
 import { TabHeader } from "../../components/Header/TabHeader";
 import {
   User, Camera, Edit3, Save, X, Mail, Phone, MapPin, Calendar, Globe, Github, Linkedin, Twitter,
-  Shield, Bell, Lock, Eye, EyeOff, Upload, Download, Settings, Award, TrendingUp, Target,
-  Briefcase, GraduationCap, Star, Heart, Bookmark, Share2, MoreHorizontal, Activity,
-  CreditCard, Wallet, History, PieChart, BarChart3, Users, MessageCircle, CheckCircle2
+  Shield, Bell, Settings, Award, TrendingUp, Target, Star, Share2, Activity,
+  Wallet, Users, CheckCircle2
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { images } from "../../constants";

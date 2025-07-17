@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Onboarding } from '../../pages/Client/Onboarding';
 
 export function OnboardingWrapper() {
-  const [showOnboarding, setShowOnboarding] = useState(true);
+  const [showOnboarding] = useState(true);
   const navigate = useNavigate();
 
   // Check localStorage to see if onboarding has been completed

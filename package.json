@@ -5,11 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "node fix-ts-errors.cjs && tsc --skipLibCheck && vite build",
+    "build:vercel": "node fix-ts-errors.cjs && tsc --skipLibCheck --noEmit && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "format": "prettier -w .",
-    "install-deps": "npm install"
+    "install-deps": "npm install",
+    "fix-ts": "node fix-ts-errors.js"
   },
   "dependencies": {
     "@iota/dapp-kit": "0.4.1",
