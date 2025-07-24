@@ -130,29 +130,29 @@ export default function NewsFeed() {
       </div>
 
       <motion.div 
-        className="pt-24 md:pt-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto"
+        className="pt-6 md:pt-0 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-8"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
         {/* Header Section */}
         <motion.div className="mb-12" variants={itemVariants}>
-          <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-            <h1 className="text-3xl font-bold text-gray-900 mb-3">
+          <div className="bg-white rounded-3xl p-10 shadow-lg border border-gray-100">
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">
               News Feed
             </h1>
-            <p className="text-gray-600 text-lg">Stay updated with the latest news and opportunities</p>
+            <p className="text-gray-600 text-xl">Stay updated with the latest news and opportunities</p>
           </div>
         </motion.div>
 
         {/* Search Bar */}
-        <motion.div className="mb-8" variants={itemVariants}>
+        <motion.div className="mb-10" variants={itemVariants}>
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
             <input
               type="text"
               placeholder="Search news..."
-              className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              className="w-full pl-12 pr-4 py-4 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-lg"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />

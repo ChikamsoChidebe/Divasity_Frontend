@@ -12,7 +12,7 @@ export function Marketplace() {
       id: "1",
       title: "GreenTech Solutions",
       category: "Clean Energy",
-      image: images.TechProject,
+      image: "https://i.pinimg.com/736x/e0/32/0b/e0320b736c26d63b53aeec1fbb7c689a.jpg",
       description:
         "Innovative solar panel technology with 30% higher efficiency than market standards.",
       funding: {
@@ -46,7 +46,7 @@ export function Marketplace() {
       id: "3",
       title: "MediHealth App",
       category: "Healthcare",
-      image: images.BusinessProject,
+      image: "https://i.pinimg.com/1200x/53/5c/43/535c438a97e013eb40e0505e72cdd9e8.jpg",
       description:
         "AI-powered healthcare app for remote diagnostics and patient monitoring.",
       funding: {

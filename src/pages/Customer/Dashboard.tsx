@@ -86,7 +86,7 @@ export function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <div className="md:hidden">
         <TabHeader
           name="Dashboard"
@@ -96,14 +96,14 @@ export function Dashboard() {
       </div>
 
       <motion.div
-        className="pt-24 md:pt-8 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto"
+        className="pt-6 md:pt-0 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-8"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
         {/* Hero Section */}
         <motion.div
-          className="mb-8 bg-gradient-to-r from-purple-600 to-blue-600 rounded-3xl overflow-hidden shadow-xl relative"
+          className="mb-12 bg-gradient-to-r from-purple-600 to-blue-600 rounded-3xl overflow-hidden shadow-2xl relative"
           variants={itemVariants}
         >
           <div className="absolute inset-0 opacity-20">
@@ -130,13 +130,13 @@ export function Dashboard() {
 
         {/* Stats Grid */}
         <motion.div
-          className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8"
+          className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12"
           variants={itemVariants}
         >
           {stats.map((stat, index) => (
             <motion.div
               key={index}
-              className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300"
+              className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300"
               whileHover={{ y: -2 }}
             >
               <div className="flex justify-between items-start mb-2">
@@ -157,7 +157,7 @@ export function Dashboard() {
         </motion.div>
 
         {/* Main Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
           {/* Recent Projects */}
           <motion.div
             className="lg:col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-gray-100"

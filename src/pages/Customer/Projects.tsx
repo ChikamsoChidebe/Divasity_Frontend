@@ -36,7 +36,7 @@ export function Projects() {
       id: "1",
       title: "GreenTech Solutions",
       category: "Clean Energy",
-      image: images.TechProject,
+      image: "https://i.pinimg.com/736x/e0/32/0b/e0320b736c26d63b53aeec1fbb7c689a.jpg",
       description: "Innovative solar panel technology with 30% higher efficiency than market standards.",
       status: "active",
       progress: 75,
@@ -99,7 +99,7 @@ export function Projects() {
       id: "3",
       title: "MediHealth App",
       category: "Healthcare",
-      image: images.BusinessProject,
+      image: "https://i.pinimg.com/1200x/53/5c/43/535c438a97e013eb40e0505e72cdd9e8.jpg",
       description: "AI-powered healthcare app for remote diagnostics and patient monitoring.",
       status: "completed",
       progress: 100,
@@ -171,7 +171,7 @@ export function Projects() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <div className="md:hidden">
         <TabHeader
           name="My Projects"
@@ -180,13 +180,13 @@ export function Projects() {
       </div>
 
       <motion.div 
-        className="pt-24 md:pt-8 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto"
+        className="pt-6 md:pt-0 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-8"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
         {/* Header with Actions */}
-        <motion.div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 gap-4" variants={itemVariants}>
+        <motion.div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-12 gap-6" variants={itemVariants}>
           <div>
             <h1 className="text-2xl font-bold text-gray-900">My Projects</h1>
             <p className="text-gray-600">Manage and track your investment projects</p>
@@ -205,7 +205,7 @@ export function Projects() {
         </motion.div>
 
         {/* Search and Filters */}
-        <motion.div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6" variants={itemVariants}>
+        <motion.div className="flex flex-col sm:flex-row sm:items-center gap-6 mb-10" variants={itemVariants}>
           <div className="relative flex-1">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <Search size={18} className="text-gray-400" />
