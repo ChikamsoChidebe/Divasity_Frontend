@@ -3,7 +3,8 @@ import { TabHeader } from "../../components/Header/TabHeader";
 import { images } from "../../constants";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { projectService } from "../../services/projectService";
 
 interface NewsItem {
   id: string;
@@ -57,10 +58,39 @@ const newsData: NewsItem[] = [
 export default function NewsFeed() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
+  const [projects, setProjects] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await projectService.getProjects({ limit: 10 });
+        setProjects(response.projects);
+      } catch (error) {
+        console.error('Failed to fetch projects:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, []);
   
   const categories = ["All", "Education", "Technology", "Health", "Finance", "Market"];
   
-  const filteredNews = newsData.filter(item => 
+  const projectNews = projects.map(project => ({
+    id: project.id,
+    title: project.title,
+    text: project.description,
+    image: project.images?.[0] || images.ProjectPlaceholder,
+    category: project.category,
+    date: new Date(project.createdAt).toLocaleDateString(),
+    readTime: "5 min read"
+  }));
+
+  const allNews = [...newsData, ...projectNews];
+  
+  const filteredNews = allNews.filter(item => 
     (activeCategory === "All" || item.category === activeCategory) &&
     (item.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
      item.text.toLowerCase().includes(searchQuery.toLowerCase()))
@@ -231,7 +261,7 @@ export default function NewsFeed() {
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  {newsData
+                  {allNews
                     .filter(item => item.category === category)
                     .slice(0, 2)
                     .map((item) => (

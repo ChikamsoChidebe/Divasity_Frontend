@@ -1,64 +1,72 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TabHeader } from "../../components/Header/TabHeader";
 import { images } from "../../constants";
 import { User, ChevronRight, ArrowRight, TrendingUp, DollarSign } from "lucide-react";
 import { motion } from "framer-motion";
+import { projectService } from "../../services/projectService";
+import { authService } from "../../services/authService";
 
 export function Dashboard() {
   const [activeTab, setActiveTab] = useState("overview");
+  const [loading, setLoading] = useState(true);
+  const [projects, setProjects] = useState<any[]>([]);
+  const [investments, setInvestments] = useState<any[]>([]);
+  const [stats, setStats] = useState([
+    { label: "Total Invested", value: "$0", change: "+0%", trend: "up" },
+    { label: "Active Projects", value: "0", change: "+0", trend: "up" },
+    { label: "Total Returns", value: "$0", change: "+0%", trend: "up" },
+    { label: "Success Rate", value: "0%", change: "+0%", trend: "up" },
+  ]);
 
-  // Sample data for dashboard
-  const stats = [
-    { label: "Total Invested", value: "$45,230", change: "+12.5%", trend: "up" },
-    { label: "Active Projects", value: "12", change: "+3", trend: "up" },
-    { label: "Total Returns", value: "$8,750", change: "+5.2%", trend: "up" },
-    { label: "Success Rate", value: "87%", change: "+2.1%", trend: "up" },
-  ];
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+        if (user.id) {
+          const [userProjects, userInvestments] = await Promise.all([
+            projectService.getUserProjects(user.id),
+            projectService.getUserInvestments(user.id)
+          ]);
+          
+          setProjects(userProjects);
+          setInvestments(userInvestments);
+          
+          const totalInvested = userInvestments.reduce((sum: number, inv: any) => sum + inv.amount, 0);
+          const activeProjects = userProjects.filter((p: any) => p.status === 'active').length;
+          
+          setStats([
+            { label: "Total Invested", value: `$${totalInvested.toLocaleString()}`, change: "+12.5%", trend: "up" },
+            { label: "Active Projects", value: activeProjects.toString(), change: "+3", trend: "up" },
+            { label: "Total Returns", value: "$0", change: "+0%", trend: "up" },
+            { label: "Success Rate", value: "0%", change: "+0%", trend: "up" },
+          ]);
+        }
+      } catch (error) {
+        console.error('Failed to fetch dashboard data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const recentProjects = [
-    {
-      id: "1",
-      name: "GreenTech Solutions",
-      category: "Clean Energy",
-      amount: 5000,
-      date: "2024-01-18",
-      status: "active",
-      progress: 75,
-    },
-    {
-      id: "2",
-      name: "MediHealth App",
-      category: "Healthcare",
-      amount: 3500,
-      date: "2024-01-10",
-      status: "active",
-      progress: 45,
-    },
-    {
-      id: "3",
-      name: "EduLearn Platform",
-      category: "Education",
-      amount: 2800,
-      date: "2023-12-28",
-      status: "completed",
-      progress: 100,
-    },
-  ];
+    fetchDashboardData();
+  }, []);
 
-  const upcomingPayments = [
-    {
-      id: "1",
-      project: "GreenTech Solutions",
-      amount: 750,
-      date: "2024-02-15",
-    },
-    {
-      id: "2",
-      project: "MediHealth App",
-      amount: 525,
-      date: "2024-02-10",
-    },
-  ];
+  const recentProjects = projects.slice(0, 3).map(project => ({
+    id: project.id,
+    name: project.title,
+    category: project.category,
+    amount: project.currentFunding || 0,
+    date: project.createdAt,
+    status: project.status,
+    progress: Math.round((project.currentFunding / project.fundingGoal) * 100),
+  }));
+
+  const upcomingPayments = investments.slice(0, 2).map(investment => ({
+    id: investment.id,
+    project: investment.project?.title || 'Unknown Project',
+    amount: investment.amount * 0.15,
+    date: new Date(Date.now() + Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString(),
+  }));
 
   const containerVariants = {
     hidden: { opacity: 0 },

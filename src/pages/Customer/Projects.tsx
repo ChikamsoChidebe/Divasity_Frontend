@@ -1,16 +1,37 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TabHeader } from "../../components/Header/TabHeader";
 import { Search, MoreVertical, Plus, ChevronDown } from "lucide-react";
 import { images } from "../../constants";
 import { motion } from "framer-motion";
+import { projectService } from "../../services/projectService";
 
 export function Projects() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeFilter, setActiveFilter] = useState("all");
   const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
   
-  // Sample project data
-  const [projects, setProjects] = useState([
+  const [projects, setProjects] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+        if (user.id) {
+          const userProjects = await projectService.getUserProjects(user.id);
+          setProjects(userProjects);
+        }
+      } catch (error) {
+        console.error('Failed to fetch projects:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, []);
+
+  const sampleProjects = [
     {
       id: "1",
       title: "GreenTech Solutions",
@@ -109,7 +130,7 @@ export function Projects() {
       ],
       createdAt: "2023-10-15",
     }
-  ]);
+  ];
 
   const filters = [
     { id: "all", name: "All Projects" },
@@ -135,7 +156,9 @@ export function Projects() {
     }
   };
 
-  const filteredProjects = projects.filter(project => {
+  const displayProjects = projects.length > 0 ? projects : sampleProjects;
+  
+  const filteredProjects = displayProjects.filter(project => {
     const matchesSearch = project.title.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesFilter = activeFilter === 'all' || project.status === activeFilter;
     return matchesSearch && matchesFilter;
