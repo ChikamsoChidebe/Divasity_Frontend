@@ -75,7 +75,7 @@ export function Marketplace() {
     {
       id: '4',
       title: 'Blockchain Supply Chain',
-      description: 'Transparent supply chain management using blockchain technology.',
+      description: 'Transparent supply management using blockchain technology.',
       category: 'Technology',
       image: 'https://i.pinimg.com/736x/0e/e3/81/0ee38185724fb092f1f2bf1bf9ba569b.jpg',
       funding: { raised: 45000, goal: 80000, backers: 67, daysLeft: 30 },
