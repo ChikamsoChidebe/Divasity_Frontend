@@ -3,6 +3,8 @@ import { Heart, Share2, Bookmark, TrendingUp, Users, Calendar, MapPin, Eye, More
 import { motion } from 'framer-motion';
 import { ProjectDetailsModal } from './ProjectDetailsModal';
 import { InvestmentModal } from './InvestmentModal';
+import { ProjectDetailsModal } from './ProjectDetailsModal';
+import { InvestmentModal } from './InvestmentModal';
 
 interface ProjectCardProps {
   project: any;
@@ -13,6 +15,8 @@ interface ProjectCardProps {
 export function ProjectCard({ project, onView, onInvest }: ProjectCardProps) {
   const [isLiked, setIsLiked] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [showInvestModal, setShowInvestModal] = useState(false);
 
   const progressPercentage = Math.round((project.funding?.raised / project.funding?.goal) * 100) || 0;
   const daysLeft = project.funding?.daysLeft || 0;
@@ -102,14 +106,14 @@ export function ProjectCard({ project, onView, onInvest }: ProjectCardProps) {
         {/* Action Buttons */}
         <div className="flex gap-3">
           <button
-            onClick={() => onView?.(project.id)}
+            onClick={() => setShowDetailsModal(true)}
             className="flex-1 px-4 py-2 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center gap-2"
           >
             <Eye size={16} />
             View Details
           </button>
           <button
-            onClick={() => onInvest?.(project.id)}
+            onClick={() => setShowInvestModal(true)}
             className="flex-1 px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-200 font-medium"
           >
             Invest Now
@@ -139,6 +143,27 @@ export function ProjectCard({ project, onView, onInvest }: ProjectCardProps) {
           </div>
         </div>
       </div>
+
+      {/* Modals */}
+      <ProjectDetailsModal
+        isOpen={showDetailsModal}
+        onClose={() => setShowDetailsModal(false)}
+        project={project}
+        onInvest={() => {
+          setShowDetailsModal(false);
+          setShowInvestModal(true);
+        }}
+      />
+      
+      <InvestmentModal
+        isOpen={showInvestModal}
+        onClose={() => setShowInvestModal(false)}
+        project={project}
+        onInvest={(amount, rewardId) => {
+          console.log('Investment:', { amount, rewardId, projectId: project.id });
+          onInvest?.(project.id);
+        }}
+      />
     </motion.div>
   );
 }
