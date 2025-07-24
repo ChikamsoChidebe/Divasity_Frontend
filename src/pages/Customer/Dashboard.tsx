@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { TabHeader } from "../../components/Header/TabHeader";
 import { images } from "../../constants";
-import { User, ChevronRight, ArrowRight, TrendingUp, DollarSign } from "lucide-react";
+import { User, ChevronRight, ArrowRight, TrendingUp, DollarSign, BarChart3, PieChart, Activity, Bell } from "lucide-react";
 import { motion } from "framer-motion";
 import { projectService } from "../../services/projectService";
 import { authService } from "../../services/authService";
+import { Analytics } from "../../components/Advanced/Analytics";
 
 export function Dashboard() {
   const [activeTab, setActiveTab] = useState("overview");
@@ -96,14 +97,14 @@ export function Dashboard() {
       </div>
 
       <motion.div
-        className="pt-6 md:pt-0 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-8"
+        className="pt-20 md:pt-8 px-3 sm:px-4 lg:px-8 max-w-7xl mx-auto pb-8"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
         {/* Hero Section */}
         <motion.div
-          className="mb-12 bg-gradient-to-r from-purple-600 to-blue-600 rounded-3xl overflow-hidden shadow-2xl relative"
+          className="mb-12 bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 rounded-3xl overflow-hidden shadow-2xl relative"
           variants={itemVariants}
         >
           <div className="absolute inset-0 opacity-20">
@@ -113,63 +114,78 @@ export function Dashboard() {
               className="w-full h-full object-cover"
             />
           </div>
-          <div className="relative p-8 md:p-12 text-white">
-            <h1 className="text-3xl md:text-4xl font-bold mb-4">
-              Welcome to Your Investment Dashboard
-            </h1>
-            <p className="text-white/80 text-lg max-w-2xl mb-6">
-              Track your investments, monitor returns, and discover new
-              opportunities all in one place.
-            </p>
-            <button className="inline-flex items-center px-6 py-3 bg-white text-purple-600 rounded-xl font-medium hover:bg-gray-100 transition-colors">
-              Explore New Projects
-              <ArrowRight size={18} className="ml-2" />
-            </button>
+          <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent"></div>
+          <div className="relative p-4 sm:p-6 md:p-12 text-white">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+              <div className="mb-4 md:mb-0">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 md:mb-4">
+                  Investment Portfolio
+                </h1>
+                <p className="text-white/90 text-sm sm:text-base md:text-xl max-w-2xl mb-4 md:mb-6">
+                  Monitor your investments, track performance, and discover new opportunities.
+                </p>
+              </div>
+              <div className="flex md:hidden items-center gap-2 mb-4">
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center flex-1">
+                  <div className="text-lg font-bold">${(investments.reduce((sum: number, inv: any) => sum + inv.amount, 0) || 45230).toLocaleString()}</div>
+                  <div className="text-xs text-white/80">Total Invested</div>
+                </div>
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center flex-1">
+                  <div className="text-lg font-bold text-green-300">+24.5%</div>
+                  <div className="text-xs text-white/80">Annual Return</div>
+                </div>
+              </div>
+              <div className="hidden md:flex items-center gap-4">
+                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 text-center">
+                  <div className="text-2xl font-bold">${(investments.reduce((sum: number, inv: any) => sum + inv.amount, 0) || 45230).toLocaleString()}</div>
+                  <div className="text-sm text-white/80">Total Invested</div>
+                </div>
+                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 text-center">
+                  <div className="text-2xl font-bold text-green-300">+24.5%</div>
+                  <div className="text-sm text-white/80">Annual Return</div>
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <button className="inline-flex items-center justify-center px-4 sm:px-6 py-3 bg-white text-purple-600 rounded-xl font-medium hover:bg-gray-100 transition-all duration-200 shadow-lg">
+                <BarChart3 size={16} className="mr-2" />
+                <span className="text-sm sm:text-base">View Analytics</span>
+              </button>
+              <button className="inline-flex items-center justify-center px-4 sm:px-6 py-3 bg-white/10 backdrop-blur-sm text-white rounded-xl font-medium hover:bg-white/20 transition-all duration-200 border border-white/20">
+                <ArrowRight size={16} className="mr-2" />
+                <span className="text-sm sm:text-base">Explore Projects</span>
+              </button>
+            </div>
           </div>
         </motion.div>
 
-        {/* Stats Grid */}
-        <motion.div
-          className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12"
-          variants={itemVariants}
-        >
-          {stats.map((stat, index) => (
-            <motion.div
-              key={index}
-              className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300"
-              whileHover={{ y: -2 }}
-            >
-              <div className="flex justify-between items-start mb-2">
-                <p className="text-sm text-gray-600">{stat.label}</p>
-                <span
-                  className={`text-xs font-medium px-2 py-1 rounded-full ${
-                    stat.trend === "up"
-                      ? "bg-green-100 text-green-600"
-                      : "bg-red-100 text-red-600"
-                  }`}
-                >
-                  {stat.change}
-                </span>
-              </div>
-              <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
-            </motion.div>
-          ))}
+        {/* Analytics Section */}
+        <motion.div variants={itemVariants}>
+          <Analytics data={{
+            totalInvested: investments.reduce((sum: number, inv: any) => sum + inv.amount, 0) || 45230,
+            totalReturns: 8750,
+            activeProjects: projects.filter((p: any) => p.status === 'active').length || 12,
+            successRate: 87,
+            monthlyGrowth: 8.2,
+            portfolioValue: 54980
+          }} />
         </motion.div>
 
         {/* Main Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-8">
           {/* Recent Projects */}
           <motion.div
-            className="lg:col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-gray-100"
+            className="lg:col-span-2 bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm border border-gray-100"
             variants={itemVariants}
           >
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-semibold text-gray-900">
+            <div className="flex justify-between items-center mb-4 sm:mb-6">
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-900">
                 Recent Projects
               </h2>
-              <button className="text-sm text-purple-600 hover:text-purple-800 font-medium flex items-center">
-                View All
-                <ChevronRight size={16} className="ml-1" />
+              <button className="text-xs sm:text-sm text-purple-600 hover:text-purple-800 font-medium flex items-center">
+                <span className="hidden sm:inline">View All</span>
+                <span className="sm:hidden">All</span>
+                <ChevronRight size={14} className="ml-1" />
               </button>
             </div>
 
@@ -177,7 +193,7 @@ export function Dashboard() {
               {recentProjects.map((project) => (
                 <div
                   key={project.id}
-                  className="p-4 border border-gray-100 rounded-xl hover:shadow-md transition-all duration-300"
+                  className="p-3 sm:p-4 border border-gray-100 rounded-lg sm:rounded-xl hover:shadow-md transition-all duration-300"
                 >
                   <div className="flex justify-between items-start mb-2">
                     <div>
@@ -226,10 +242,10 @@ export function Dashboard() {
           </motion.div>
 
           {/* Right Column */}
-          <motion.div className="space-y-8" variants={itemVariants}>
+          <motion.div className="space-y-4 sm:space-y-6 lg:space-y-8" variants={itemVariants}>
             {/* Upcoming Payments */}
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-              <h2 className="text-xl font-semibold text-gray-900 mb-6">
+            <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm border border-gray-100">
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6">
                 Upcoming Payments
               </h2>
 
@@ -264,8 +280,8 @@ export function Dashboard() {
             </div>
 
             {/* Performance Summary */}
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-              <h2 className="text-xl font-semibold text-gray-900 mb-6">
+            <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm border border-gray-100">
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6">
                 Performance
               </h2>
 

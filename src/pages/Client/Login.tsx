@@ -68,10 +68,17 @@ export function Login() {
       });
       
       // Store user data and token in sessionStorage
-      sessionStorage.setItem(APP_CONFIG.userKey, JSON.stringify(response.data));
-      sessionStorage.setItem(APP_CONFIG.tokenKey, response.token || '');
-
-      navigate(APP_CONFIG.defaultRedirectAfterLogin); // Redirect after successful login
+      if (response.data && response.token) {
+        sessionStorage.setItem('user', JSON.stringify(response.data));
+        sessionStorage.setItem('token', response.token);
+        
+        // Force a small delay to ensure storage is complete
+        setTimeout(() => {
+          navigate('/dashboard', { replace: true });
+        }, 100);
+      } else {
+        throw new Error('Invalid response data');
+      }
     } catch (error: any) {
       setErrors({ ...errors, api: error.message || "Login failed. Please try again." });
     } finally {

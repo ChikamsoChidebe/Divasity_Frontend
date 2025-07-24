@@ -8,7 +8,7 @@ export const APP_CONFIG = {
   apiDocsUrl: 'https://divasitybackendtest.onrender.com/api-docs',
   tokenKey: 'token',
   userKey: 'user',
-  defaultRedirectAfterLogin: '/updates',
+  defaultRedirectAfterLogin: '/dashboard',
   defaultRedirectAfterLogout: '/signin',
 };
 

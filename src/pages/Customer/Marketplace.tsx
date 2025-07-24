@@ -1,104 +1,115 @@
-import { useState } from "react";
-import { TabHeader } from "../../components/Header/TabHeader";
-import { Search } from "lucide-react";
-import { images } from "../../constants";
-import { motion } from "framer-motion";
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Search, Filter, TrendingUp, Star, MapPin, Clock, Users, DollarSign } from 'lucide-react';
+import { TabHeader } from '../../components/Header/TabHeader';
+import { AdvancedSearch } from '../../components/Advanced/AdvancedSearch';
+import { ProjectCard } from '../../components/Advanced/ProjectCard';
+import { projectService } from '../../services/projectService';
 
 export function Marketplace() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [activeCategory, setActiveCategory] = useState("all");
-  const [projects, setProjects] = useState([
-    {
-      id: "1",
-      title: "GreenTech Solutions",
-      category: "Clean Energy",
-      image: "https://i.pinimg.com/736x/e0/32/0b/e0320b736c26d63b53aeec1fbb7c689a.jpg",
-      description:
-        "Innovative solar panel technology with 30% higher efficiency than market standards.",
-      funding: {
-        raised: 45000,
-        goal: 75000,
-        backers: 128,
-        daysLeft: 18,
-      },
-      tags: ["Sustainable", "Technology", "Growth"],
-      featured: true,
-      rating: 4.8,
-    },
-    {
-      id: "2",
-      title: "Urban Farming Initiative",
-      category: "Agriculture",
-      image: images.FarmingPost,
-      description:
-        "Vertical farming solution for urban areas to grow organic produce locally.",
-      funding: {
-        raised: 28500,
-        goal: 50000,
-        backers: 95,
-        daysLeft: 24,
-      },
-      tags: ["Sustainable", "Community", "Food"],
-      featured: false,
-      rating: 4.5,
-    },
-    {
-      id: "3",
-      title: "MediHealth App",
-      category: "Healthcare",
-      image: "https://i.pinimg.com/1200x/53/5c/43/535c438a97e013eb40e0505e72cdd9e8.jpg",
-      description:
-        "AI-powered healthcare app for remote diagnostics and patient monitoring.",
-      funding: {
-        raised: 62000,
-        goal: 100000,
-        backers: 215,
-        daysLeft: 12,
-      },
-      tags: ["Healthcare", "Technology", "AI"],
-      featured: true,
-      rating: 4.9,
-    },
-  ]);
+  const [projects, setProjects] = useState<any[]>([]);
+  const [featuredProjects, setFeaturedProjects] = useState<any[]>([]);
+  const [trendingProjects, setTrendingProjects] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [activeCategory, setActiveCategory] = useState('all');
 
   const categories = [
-    { id: "all", name: "All Projects" },
-    { id: "clean-energy", name: "Clean Energy" },
-    { id: "agriculture", name: "Agriculture" },
-    { id: "healthcare", name: "Healthcare" },
-    { id: "education", name: "Education" },
-    { id: "technology", name: "Technology" },
+    { id: 'all', name: 'All Projects', count: 156 },
+    { id: 'technology', name: 'Technology', count: 45 },
+    { id: 'healthcare', name: 'Healthcare', count: 32 },
+    { id: 'clean-energy', name: 'Clean Energy', count: 28 },
+    { id: 'agriculture', name: 'Agriculture', count: 21 },
+    { id: 'education', name: 'Education', count: 18 },
+    { id: 'finance', name: 'Finance', count: 12 }
   ];
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1 },
+  const sampleProjects = [
+    {
+      id: '1',
+      title: 'Revolutionary Solar Panel Technology',
+      description: 'Next-generation solar panels with 40% higher efficiency and 50% lower cost than traditional panels.',
+      category: 'Clean Energy',
+      image: 'https://i.pinimg.com/736x/e0/32/0b/e0320b736c26d63b53aeec1fbb7c689a.jpg',
+      funding: { raised: 125000, goal: 200000, backers: 234 },
+      status: 'active',
+      location: 'San Francisco, CA',
+      featured: true,
+      trending: true,
+      rating: 4.8,
+      riskLevel: 'Medium',
+      expectedReturn: '15-25%',
+      timeline: '18 months',
+      createdAt: '2024-01-15'
     },
+    {
+      id: '2',
+      title: 'AI-Powered Medical Diagnostics',
+      description: 'Advanced AI system for early disease detection with 95% accuracy rate.',
+      category: 'Healthcare',
+      image: 'https://i.pinimg.com/1200x/53/5c/43/535c438a97e013eb40e0505e72cdd9e8.jpg',
+      funding: { raised: 89000, goal: 150000, backers: 156 },
+      status: 'active',
+      location: 'Boston, MA',
+      featured: true,
+      rating: 4.9,
+      riskLevel: 'High',
+      expectedReturn: '20-35%',
+      timeline: '24 months',
+      createdAt: '2024-01-10'
+    },
+    {
+      id: '3',
+      title: 'Vertical Farming Revolution',
+      description: 'Sustainable urban farming solution producing 10x more yield in 90% less space.',
+      category: 'Agriculture',
+      image: 'https://i.pinimg.com/736x/8b/c4/2a/8bc42a5c8f9d3e1f7a6b5c4d3e2f1a0b.jpg',
+      funding: { raised: 67000, goal: 100000, backers: 98 },
+      status: 'active',
+      location: 'Austin, TX',
+      trending: true,
+      rating: 4.7,
+      riskLevel: 'Medium',
+      expectedReturn: '12-20%',
+      timeline: '12 months',
+      createdAt: '2024-01-05'
+    }
+  ];
+
+  useEffect(() => {
+    const fetchMarketplaceData = async () => {
+      try {
+        // In a real app, these would be separate API calls
+        setProjects(sampleProjects);
+        setFeaturedProjects(sampleProjects.filter(p => p.featured));
+        setTrendingProjects(sampleProjects.filter(p => p.trending));
+      } catch (error) {
+        console.error('Failed to fetch marketplace data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMarketplaceData();
+  }, []);
+
+  const handleSearch = (filters: any) => {
+    console.log('Search filters:', filters);
   };
 
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.5 },
-    },
+  const handleViewProject = (id: string) => {
+    console.log('View project:', id);
   };
 
-  const filteredProjects = projects.filter((project) => {
-    const matchesSearch = project.title
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase());
-    const matchesCategory =
-      activeCategory === "all" ||
-      project.category.toLowerCase().includes(activeCategory.toLowerCase());
-    return matchesSearch && matchesCategory;
-  });
+  const handleInvestProject = (id: string) => {
+    console.log('Invest in project:', id);
+  };
+
+  const filteredProjects = activeCategory === 'all' 
+    ? projects 
+    : projects.filter(p => p.category.toLowerCase().replace(' ', '-') === activeCategory);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <div className="md:hidden">
         <TabHeader
           name="Marketplace"
@@ -106,161 +117,180 @@ export function Marketplace() {
         />
       </div>
 
-      <motion.div
-        className="pt-24 md:pt-8 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        {/* Hero Section */}
-        <motion.div
-          className="mb-8 bg-gradient-to-r from-purple-600 to-blue-600 rounded-3xl overflow-hidden shadow-xl relative"
-          variants={itemVariants}
+      <div className="pt-6 md:pt-0 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-8">
+        {/* Header */}
+        <motion.div 
+          className="mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
         >
-          <div className="absolute inset-0 opacity-20">
-            <img
-              src={images.DashboardHero}
-              alt="Marketplace background"
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div className="relative p-8 md:p-12 text-white">
-            <h1 className="text-3xl md:text-4xl font-bold mb-4">
-              Discover Innovative Projects
-            </h1>
-            <p className="text-white/80 text-lg max-w-2xl mb-6">
-              Explore and invest in groundbreaking projects that align with your
-              values and financial goals.
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">Investment Marketplace</h1>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Discover innovative projects, connect with entrepreneurs, and build your investment portfolio
             </p>
+          </div>
 
-            {/* Search Bar */}
-            <div className="relative max-w-lg">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search size={20} className="text-gray-400" />
-              </div>
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="block w-full pl-10 pr-3 py-3 border border-transparent bg-white/20 backdrop-blur-sm text-white placeholder-white/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-white/50"
-                placeholder="Search for projects..."
-              />
+          {/* Market Stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div className="bg-white rounded-2xl p-6 text-center shadow-sm border border-gray-100">
+              <div className="text-2xl font-bold text-purple-600 mb-1">156</div>
+              <div className="text-sm text-gray-600">Active Projects</div>
+            </div>
+            <div className="bg-white rounded-2xl p-6 text-center shadow-sm border border-gray-100">
+              <div className="text-2xl font-bold text-green-600 mb-1">$2.4M</div>
+              <div className="text-sm text-gray-600">Total Funding</div>
+            </div>
+            <div className="bg-white rounded-2xl p-6 text-center shadow-sm border border-gray-100">
+              <div className="text-2xl font-bold text-blue-600 mb-1">1,234</div>
+              <div className="text-sm text-gray-600">Investors</div>
+            </div>
+            <div className="bg-white rounded-2xl p-6 text-center shadow-sm border border-gray-100">
+              <div className="text-2xl font-bold text-orange-600 mb-1">87%</div>
+              <div className="text-sm text-gray-600">Success Rate</div>
             </div>
           </div>
         </motion.div>
 
-        {/* Categories */}
-        <motion.div
-          className="mb-8 overflow-x-auto pb-2 hide-scrollbar"
-          variants={itemVariants}
+        {/* Advanced Search */}
+        <motion.div 
+          className="mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
         >
-          <div className="flex space-x-2">
-            {categories.map((category) => (
+          <AdvancedSearch 
+            onSearch={handleSearch}
+            categories={categories.map(c => c.name)}
+          />
+        </motion.div>
+
+        {/* Category Filters */}
+        <motion.div 
+          className="mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+        >
+          <div className="flex items-center gap-3 overflow-x-auto pb-2">
+            {categories.map(category => (
               <button
                 key={category.id}
                 onClick={() => setActiveCategory(category.id)}
-                className={`px-4 py-2 rounded-full whitespace-nowrap text-sm font-medium transition-colors ${
+                className={`px-6 py-3 rounded-full whitespace-nowrap text-sm font-medium transition-all duration-200 ${
                   activeCategory === category.id
-                    ? "bg-purple-600 text-white"
-                    : "bg-white text-gray-700 hover:bg-gray-100"
+                    ? 'bg-purple-600 text-white shadow-lg'
+                    : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
                 }`}
               >
                 {category.name}
+                <span className="ml-2 px-2 py-0.5 bg-black/10 rounded-full text-xs">
+                  {category.count}
+                </span>
               </button>
             ))}
           </div>
         </motion.div>
 
-        {/* Projects Grid */}
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12"
-          variants={containerVariants}
-        >
-          {filteredProjects.map((project) => (
-            <motion.div
-              key={project.id}
-              className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300"
-              variants={itemVariants}
-              whileHover={{ y: -4 }}
-            >
-              <div className="relative h-48">
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover"
+        {/* Featured Projects */}
+        {featuredProjects.length > 0 && (
+          <motion.div 
+            className="mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+                <Star className="text-yellow-500" size={24} />
+                Featured Projects
+              </h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {featuredProjects.map(project => (
+                <ProjectCard
+                  key={project.id}
+                  project={project}
+                  onView={handleViewProject}
+                  onInvest={handleInvestProject}
                 />
-                {project.featured && (
-                  <div className="absolute top-4 left-4 bg-purple-600 text-white text-xs font-bold px-2 py-1 rounded-md">
-                    Featured
-                  </div>
-                )}
-                <div className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-sm text-purple-600 text-sm font-bold px-2 py-1 rounded-md flex items-center">
-                  ★ {project.rating}
+              ))}
+            </div>
+          </motion.div>
+        )}
+
+        {/* Trending Projects */}
+        {trendingProjects.length > 0 && (
+          <motion.div 
+            className="mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+          >
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+                <TrendingUp className="text-green-500" size={24} />
+                Trending Now
+              </h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {trendingProjects.map(project => (
+                <ProjectCard
+                  key={project.id}
+                  project={project}
+                  onView={handleViewProject}
+                  onInvest={handleInvestProject}
+                />
+              ))}
+            </div>
+          </motion.div>
+        )}
+
+        {/* All Projects */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+        >
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-gray-900">
+              {activeCategory === 'all' ? 'All Projects' : categories.find(c => c.id === activeCategory)?.name}
+            </h2>
+            <div className="text-sm text-gray-500">
+              {filteredProjects.length} projects found
+            </div>
+          </div>
+
+          {loading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="bg-white rounded-2xl p-6 animate-pulse">
+                  <div className="h-48 bg-gray-200 rounded-xl mb-4"></div>
+                  <div className="h-4 bg-gray-200 rounded mb-2"></div>
+                  <div className="h-3 bg-gray-200 rounded w-2/3"></div>
                 </div>
-              </div>
-
-              <div className="p-6">
-                <div className="flex justify-between items-start mb-2">
-                  <h3 className="font-semibold text-lg text-gray-900">
-                    {project.title}
-                  </h3>
-                  <span className="text-xs font-medium px-2 py-1 bg-purple-100 text-purple-600 rounded-full">
-                    {project.category}
-                  </span>
-                </div>
-
-                <p className="text-gray-600 text-sm mb-4 line-clamp-2">
-                  {project.description}
-                </p>
-
-                <div className="mb-4">
-                  <div className="flex justify-between text-sm mb-1">
-                    <span className="text-gray-600">
-                      ${project.funding.raised.toLocaleString()} raised
-                    </span>
-                    <span className="font-medium text-gray-900">
-                      {Math.round(
-                        (project.funding.raised / project.funding.goal) * 100
-                      )}
-                      %
-                    </span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div
-                      className="bg-purple-600 h-2 rounded-full"
-                      style={{
-                        width: `${Math.min(
-                          (project.funding.raised / project.funding.goal) * 100,
-                          100
-                        )}%`,
-                      }}
-                    ></div>
-                  </div>
-                  <div className="flex justify-between text-xs text-gray-500 mt-1">
-                    <span>{project.funding.backers} backers</span>
-                    <span>{project.funding.daysLeft} days left</span>
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap gap-1 mb-4">
-                  {project.tags.map((tag, index) => (
-                    <span
-                      key={index}
-                      className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-md"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                <button className="w-full py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors">
-                  View Project
-                </button>
-              </div>
-            </motion.div>
-          ))}
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredProjects.map((project, index) => (
+                <motion.div
+                  key={project.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <ProjectCard
+                    project={project}
+                    onView={handleViewProject}
+                    onInvest={handleInvestProject}
+                  />
+                </motion.div>
+              ))}
+            </div>
+          )}
         </motion.div>
-      </motion.div>
+      </div>
     </div>
   );
 }

@@ -9,14 +9,18 @@ export function OnboardingWrapper() {
   // Check localStorage to see if onboarding has been completed
   useEffect(() => {
     const onboardingCompleted = localStorage.getItem('onboardingCompleted');
-    if (onboardingCompleted === 'true') {
-      navigate('/signin');
+    const token = sessionStorage.getItem('token');
+    
+    if (token) {
+      navigate('/dashboard', { replace: true });
+    } else if (onboardingCompleted === 'true') {
+      navigate('/signin', { replace: true });
     }
   }, [navigate]);
 
   const handleComplete = () => {
     localStorage.setItem('onboardingCompleted', 'true');
-    navigate('/signin');
+    navigate('/signin', { replace: true });
   };
 
   if (!showOnboarding) {
