@@ -17,7 +17,7 @@ export function TabBar() {
   ];
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 border-t border-gray-200 bg-white/95 backdrop-blur-md shadow-lg">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 border-t border-gray-200 bg-white/95 backdrop-blur-md shadow-lg z-50">
       <div className="safe-area-inset-bottom">
         <ul className="flex justify-around px-2 py-2">
           {tabs.map(({ key, icon, path }) => {

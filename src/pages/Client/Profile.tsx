@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { TabHeader } from "../../components/Header/TabHeader";
+import { TabBar } from "../../components/Header/TabBar";
+import { DesktopHeader } from "../../components/Header/DesktopHeader";
 import {
   User, Camera, Edit3, Save, X, Mail, Phone, MapPin, Calendar, Globe, Github, Linkedin, Twitter,
   Shield, Bell, Settings, Award, TrendingUp, Target, Star, Share2, Activity,
@@ -64,8 +66,8 @@ export default function Profile() {
     firstName: 'John',
     lastName: 'Doe',
     email: 'john.doe@example.com',
-    phone: '+1 (555) 123-4567',
-    address: 'San Francisco, CA',
+    phone: '+2349039220171',
+    address: ' Lagos, Nigeria',
     bio: 'Passionate investor and entrepreneur focused on sustainable technology and innovative solutions. Always looking for the next big opportunity to make a positive impact.',
     avatar: '/api/placeholder/150/150',
     coverImage: '/api/placeholder/800/300',
@@ -223,6 +225,12 @@ export default function Profile() {
         }}></div>
       </div>
 
+      {/* Desktop Header */}
+      <div className="hidden md:block">
+        <DesktopHeader />
+      </div>
+
+      {/* Mobile Header */}
       <div className="md:hidden">
         <TabHeader
           name="Profile"
@@ -232,7 +240,7 @@ export default function Profile() {
       </div>
 
       <motion.div
-        className="pt-24 md:pt-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10"
+        className="pt-24 md:pt-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10 pb-24 md:pb-8"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -770,6 +778,9 @@ export default function Profile() {
           )}
         </AnimatePresence>
       </motion.div>
+
+      {/* Mobile Bottom Navigation */}
+      <TabBar />
     </div>
   );
 }

@@ -70,7 +70,7 @@ export function Projects() {
       id: "4",
       title: "Smart City Infrastructure",
       category: "Technology",
-      image: "https://i.pinimg.com/736x/a1/b2/c3/a1b2c3d4e5f6789012345678901234ab.jpg",
+      image: "https://i.pinimg.com/736x/5b/f3/4f/5bf34f5285a30c1c3277b991abca2761.jpg",
       description: "IoT-based smart city solutions for traffic management and energy optimization.",
       status: "active",
       progress: 60,
