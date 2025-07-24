@@ -1,14 +1,16 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { isAuthenticated } from '../../utils/auth';
+
 export function RootRedirect() {
   const navigate = useNavigate();
   
   useEffect(() => {
-    const token = sessionStorage.getItem('token');
+    const authenticated = isAuthenticated();
     const onboardingCompleted = localStorage.getItem('onboardingCompleted');
     
-    if (token) {
+    if (authenticated) {
       navigate('/dashboard', { replace: true });
     } else if (onboardingCompleted === 'true') {
       navigate('/signin', { replace: true });

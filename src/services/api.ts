@@ -25,7 +25,7 @@ class ApiService {
     // Request interceptor
     this.api.interceptors.request.use(
       (config) => {
-        const token = useAuthStore.getState().token;
+        const token = sessionStorage.getItem('token') || localStorage.getItem('token');
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;
         }
@@ -43,7 +43,10 @@ class ApiService {
       },
       (error) => {
         if (error.response?.status === 401) {
-          useAuthStore.getState().logout();
+          sessionStorage.removeItem('token');
+          sessionStorage.removeItem('user');
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
           toast.error('Session expired. Please login again.');
           window.location.href = '/signin';
         } else if (error.response?.status >= 500) {

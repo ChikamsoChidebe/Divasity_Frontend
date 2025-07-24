@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Heart, Share2, Bookmark, TrendingUp, Users, Calendar, MapPin, Eye, MoreHorizontal } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { ProjectDetailsModal } from './ProjectDetailsModal';
+import { InvestmentModal } from './InvestmentModal';
 
 interface ProjectCardProps {
   project: any;

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Onboarding } from '../../pages/Client/Onboarding';
+import { isAuthenticated } from '../../utils/auth';
 
 export function OnboardingWrapper() {
   const [showOnboarding] = useState(true);
@@ -9,9 +10,9 @@ export function OnboardingWrapper() {
   // Check localStorage to see if onboarding has been completed
   useEffect(() => {
     const onboardingCompleted = localStorage.getItem('onboardingCompleted');
-    const token = sessionStorage.getItem('token');
+    const authenticated = isAuthenticated();
     
-    if (token) {
+    if (authenticated) {
       navigate('/dashboard', { replace: true });
     } else if (onboardingCompleted === 'true') {
       navigate('/signin', { replace: true });
