@@ -16,7 +16,7 @@ interface PerformanceChartProps {
 
 export function PerformanceChart({ data, title, type = 'line' }: PerformanceChartProps) {
   const [selectedPeriod, setSelectedPeriod] = useState('1M');
-  const [chartType, setChartType] = useState(type);
+  const [chartType, setChartType] = useState<'line' | 'bar' | 'area'>(type);
 
   const periods = ['1W', '1M', '3M', '6M', '1Y', 'ALL'];
   
@@ -62,7 +62,7 @@ export function PerformanceChart({ data, title, type = 'line' }: PerformanceChar
           {['line', 'bar', 'area'].map((t) => (
             <button
               key={t}
-              onClick={() => setChartType(t)}
+              onClick={() => setChartType(t as 'line' | 'bar' | 'area')}
               className={`p-2 rounded-md transition-colors ${
                 chartType === t
                   ? 'bg-white text-purple-600 shadow-sm'
