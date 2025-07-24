@@ -4,30 +4,31 @@ import { Projects } from '../pages/Customer/Projects'
 import { Wallet } from '../pages/Customer/Wallet'
 import { Posts } from '../pages/Customer/Posts'
 import Profile from '../pages/Client/Profile'
+import { MainLayout } from '../components/Layout/MainLayout'
 
 export const PrivateRoutes = [
     {
         path: "/dashboard",
-        element: <Dashboard/>
+        element: <MainLayout><Dashboard/></MainLayout>
     },
     {
         path: "/marketplace",
-        element: <Marketplace/>
+        element: <MainLayout><Marketplace/></MainLayout>
     },
     {
         path: "/projects",
-        element: <Projects/>
+        element: <MainLayout><Projects/></MainLayout>
     },
     {
         path: "/wallet",
-        element: <Wallet/>
+        element: <MainLayout><Wallet/></MainLayout>
     },
     {
         path: "/posts",
-        element: <Posts/>
+        element: <MainLayout><Posts/></MainLayout>
     },
     {
         path: "/profile",
-        element: <Profile/>
+        element: <MainLayout><Profile/></MainLayout>
     }
 ]

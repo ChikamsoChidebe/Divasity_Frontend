@@ -3,8 +3,6 @@ import { Heart, Share2, Bookmark, TrendingUp, Users, Calendar, MapPin, Eye, More
 import { motion } from 'framer-motion';
 import { ProjectDetailsModal } from './ProjectDetailsModal';
 import { InvestmentModal } from './InvestmentModal';
-import { ProjectDetailsModal } from './ProjectDetailsModal';
-import { InvestmentModal } from './InvestmentModal';
 
 interface ProjectCardProps {
   project: any;

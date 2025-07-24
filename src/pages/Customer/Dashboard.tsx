@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { projectService } from "../../services/projectService";
 import { authService } from "../../services/authService";
 import { Analytics } from "../../components/Advanced/Analytics";
+import { PerformanceChart } from "../../components/Advanced/PerformanceChart";
 
 export function Dashboard() {
   const [activeTab, setActiveTab] = useState("overview");
@@ -169,6 +170,22 @@ export function Dashboard() {
             monthlyGrowth: 8.2,
             portfolioValue: 54980
           }} />
+        </motion.div>
+
+        {/* Performance Chart */}
+        <motion.div variants={itemVariants} className="mb-12">
+          <PerformanceChart
+            data={[
+              { period: 'Jan', value: 12000, change: 5.2 },
+              { period: 'Feb', value: 15000, change: 8.1 },
+              { period: 'Mar', value: 18000, change: 12.3 },
+              { period: 'Apr', value: 22000, change: 15.7 },
+              { period: 'May', value: 28000, change: 18.9 },
+              { period: 'Jun', value: 32000, change: 22.1 }
+            ]}
+            title="Portfolio Performance"
+            type="line"
+          />
         </motion.div>
 
         {/* Main Content */}

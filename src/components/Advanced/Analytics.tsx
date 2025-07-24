@@ -1,4 +1,4 @@
-import { TrendingUp, TrendingDown, DollarSign, Users, Target, Award } from 'lucide-react';
+import { TrendingUp, TrendingDown, DollarSign, Target, Award, Activity } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface AnalyticsProps {
@@ -13,21 +13,13 @@ interface AnalyticsProps {
 }
 
 export function Analytics({ data }: AnalyticsProps) {
-  const metrics = [
+  const stats = [
     {
       label: 'Total Invested',
       value: `$${data.totalInvested.toLocaleString()}`,
       change: '+12.5%',
       trend: 'up',
       icon: DollarSign,
-      color: 'blue'
-    },
-    {
-      label: 'Portfolio Value',
-      value: `$${data.portfolioValue.toLocaleString()}`,
-      change: '+8.2%',
-      trend: 'up',
-      icon: TrendingUp,
       color: 'green'
     },
     {
@@ -36,6 +28,14 @@ export function Analytics({ data }: AnalyticsProps) {
       change: '+3',
       trend: 'up',
       icon: Target,
+      color: 'blue'
+    },
+    {
+      label: 'Total Returns',
+      value: `$${data.totalReturns.toLocaleString()}`,
+      change: '+5.2%',
+      trend: 'up',
+      icon: TrendingUp,
       color: 'purple'
     },
     {
@@ -48,44 +48,45 @@ export function Analytics({ data }: AnalyticsProps) {
     }
   ];
 
-  const getColorClasses = (color: string) => {
-    const colors = {
-      blue: 'bg-blue-100 text-blue-600',
-      green: 'bg-green-100 text-green-600',
-      purple: 'bg-purple-100 text-purple-600',
-      orange: 'bg-orange-100 text-orange-600'
-    };
-    return colors[color as keyof typeof colors] || colors.blue;
-  };
-
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-      {metrics.map((metric, index) => (
-        <motion.div
-          key={metric.label}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: index * 0.1 }}
-          className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300"
-        >
-          <div className="flex items-center justify-between mb-4">
-            <div className={`p-3 rounded-xl ${getColorClasses(metric.color)}`}>
-              <metric.icon size={24} />
+    <motion.div
+      className="mb-8"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.2 }}
+    >
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {stats.map((stat, index) => (
+          <motion.div
+            key={index}
+            className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300"
+            whileHover={{ y: -2 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1 }}
+          >
+            <div className="flex justify-between items-start mb-2">
+              <div className={`p-2 rounded-lg bg-${stat.color}-100`}>
+                <stat.icon size={20} className={`text-${stat.color}-600`} />
+              </div>
+              <div className={`flex items-center text-xs font-medium px-2 py-1 rounded-full ${
+                stat.trend === 'up' 
+                  ? 'bg-green-100 text-green-600' 
+                  : 'bg-red-100 text-red-600'
+              }`}>
+                {stat.trend === 'up' ? (
+                  <TrendingUp size={12} className="mr-1" />
+                ) : (
+                  <TrendingDown size={12} className="mr-1" />
+                )}
+                {stat.change}
+              </div>
             </div>
-            <div className={`flex items-center gap-1 text-sm font-medium ${
-              metric.trend === 'up' ? 'text-green-600' : 'text-red-600'
-            }`}>
-              {metric.trend === 'up' ? <TrendingUp size={16} /> : <TrendingDown size={16} />}
-              {metric.change}
-            </div>
-          </div>
-          
-          <div>
-            <p className="text-2xl font-bold text-gray-900 mb-1">{metric.value}</p>
-            <p className="text-sm text-gray-600">{metric.label}</p>
-          </div>
-        </motion.div>
-      ))}
-    </div>
+            <p className="text-2xl font-bold text-gray-900 mb-1">{stat.value}</p>
+            <p className="text-sm text-gray-600">{stat.label}</p>
+          </motion.div>
+        ))}
+      </div>
+    </motion.div>
   );
 }
