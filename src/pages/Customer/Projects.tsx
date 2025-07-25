@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { TabHeader } from "../../components/Header/TabHeader";
+import { TabBar } from "../../components/Header/TabBar";
 import { Plus, Grid, List, Search, TrendingUp, Target, Award, Calendar, Users, DollarSign } from "lucide-react";
 import { images } from "../../constants";
 import { motion } from "framer-motion";
@@ -146,7 +147,7 @@ export function Projects() {
       </div>
 
       <motion.div 
-        className="pt-20 md:pt-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto pb-8"
+        className="pt-20 md:pt-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto pb-24 md:pb-8"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -154,16 +155,16 @@ export function Projects() {
         {/* Professional Header */}
         <motion.div className="mb-12" variants={itemVariants}>
           <div className="text-center mb-10">
-            <h1 className="text-5xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-4">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-4">
               Investment Portfolio
             </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
               Track, manage, and optimize your investment opportunities with comprehensive analytics
             </p>
           </div>
 
           {/* Enhanced Stats Grid */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {[
               { label: 'Total Projects', value: stats.totalProjects, icon: <Target size={24} />, color: 'purple' },
               { label: 'Total Invested', value: `$${stats.totalFunding.toLocaleString()}`, icon: <DollarSign size={24} />, color: 'green' },
@@ -172,7 +173,7 @@ export function Projects() {
             ].map((stat, index) => (
               <motion.div
                 key={index}
-                className="bg-white/80 backdrop-blur-xl rounded-2xl p-6 text-center shadow-lg border border-white/20 hover:shadow-xl transition-all duration-300"
+                className="bg-white/80 backdrop-blur-xl rounded-2xl p-4 sm:p-6 text-center shadow-lg border border-white/20 hover:shadow-xl transition-all duration-300"
                 whileHover={{ y: -4 }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -186,8 +187,8 @@ export function Projects() {
                 } text-white mb-3`}>
                   {stat.icon}
                 </div>
-                <div className="text-3xl font-bold text-gray-900 mb-1">{stat.value}</div>
-                <div className="text-sm font-medium text-gray-600">{stat.label}</div>
+                <div className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">{stat.value}</div>
+                <div className="text-xs sm:text-sm font-medium text-gray-600">{stat.label}</div>
               </motion.div>
             ))}
           </div>
@@ -390,6 +391,9 @@ export function Projects() {
           )}
         </motion.div>
       </motion.div>
+      
+      {/* Mobile Bottom Navigation */}
+      <TabBar />
     </div>
   );
 }
