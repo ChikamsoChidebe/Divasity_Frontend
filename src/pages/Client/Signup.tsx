@@ -127,10 +127,10 @@ export function Signup() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 via-white to-blue-50">
+    <div className="min-h-screen p-4 flex items-center justify-center bg-gradient-to-br from-purple-50 via-white to-blue-50">
       <div className="absolute top-0 left-0 w-full h-full bg-pattern opacity-5 z-0"></div>
       
-      <div className="grid md:grid-cols-2 gap-0 w-full max-w-6xl bg-white rounded-3xl overflow-hidden shadow-2xl z-10 relative">
+      <div className="grid md:grid-cols-2 gap-0 w-full max-w-4xl h-[700px] bg-white rounded-2xl overflow-hidden shadow-2xl z-10 relative">
         {/* Left Side - Decorative */}
         <div className="hidden md:block relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-purple-600 to-blue-500"></div>
@@ -155,21 +155,21 @@ export function Signup() {
         
         {/* Right Side - Form */}
         <motion.div 
-          className="p-10 md:p-16 flex flex-col justify-center"
+          className="p-4 flex flex-col justify-center h-full overflow-y-auto"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
-          <div className="md:hidden flex justify-center mb-8">
-            <img src={images.Logo} alt="Logo" className="h-20 w-auto" />
+          <div className="md:hidden flex justify-center mb-2">
+            <img src={images.Logo} alt="Logo" className="h-10 w-auto" />
           </div>
           
-          <motion.div variants={itemVariants}>
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Create Account</h2>
-            <p className="text-gray-600 mb-8 text-lg">Join our community of innovators and investors</p>
+          <motion.div variants={itemVariants} className="form-header">
+            <h2 className="text-2xl font-bold text-gray-900 form-title">Create Account</h2>
+            <p className="text-gray-600 text-sm form-description">Join our community of innovators and investors</p>
             
             {/* Progress Steps */}
-            <div className="flex items-center mb-10">
+            <div className="flex items-center progress-steps">
               <div className="flex-1">
                 <div className={`h-2 rounded-full ${step >= 1 ? 'bg-purple-600' : 'bg-gray-200'}`}></div>
                 <p className={`text-xs mt-1 ${step >= 1 ? 'text-purple-600 font-medium' : 'text-gray-500'}`}>Personal Info</p>
@@ -191,18 +191,18 @@ export function Signup() {
           {errors.api && (
             <motion.div 
               variants={itemVariants}
-              className="mb-8 bg-red-50 p-6 rounded-xl border border-red-100"
+              className="mb-6 bg-red-50 p-4 rounded-xl border border-red-100"
             >
               <p className="text-sm text-red-600">{errors.api}</p>
             </motion.div>
           )}
 
           {step === 1 ? (
-            <motion.div className="space-y-6" variants={itemVariants}>
+            <motion.div className="form-section" variants={itemVariants}>
               {/* Name Fields */}
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                <div>
-                  <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-1">
+              <div className="grid grid-cols-1 gap-y-4 gap-x-4 sm:grid-cols-2">
+                <div className="field-group">
+                  <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
                     First Name
                   </label>
                   <div className="relative rounded-md shadow-sm">
@@ -215,19 +215,19 @@ export function Signup() {
                       type="text"
                       value={form.firstName}
                       onChange={(e) => handleChange("firstName", e.target.value)}
-                      className={`block w-full pl-10 pr-3 py-3 border ${
+                      className={`block w-full pl-8 pr-3 py-2.5 text-sm border ${
                         errors.firstName ? 'border-red-300 ring-1 ring-red-300' : 'border-gray-300'
-                      } rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200`}
+                      } rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200`}
                       placeholder="First Name"
                     />
                   </div>
                   {errors.firstName && (
-                    <p className="mt-2 text-sm text-red-600">{errors.firstName}</p>
+                    <p className="mt-1 text-sm text-red-600">{errors.firstName}</p>
                   )}
                 </div>
 
-                <div>
-                  <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-1">
+                <div className="field-group">
+                  <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
                     Last Name
                   </label>
                   <div className="relative rounded-md shadow-sm">
@@ -240,21 +240,21 @@ export function Signup() {
                       type="text"
                       value={form.lastName}
                       onChange={(e) => handleChange("lastName", e.target.value)}
-                      className={`block w-full pl-10 pr-3 py-3 border ${
+                      className={`block w-full pl-8 pr-3 py-2.5 text-sm border ${
                         errors.lastName ? 'border-red-300 ring-1 ring-red-300' : 'border-gray-300'
-                      } rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200`}
+                      } rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200`}
                       placeholder="Last Name"
                     />
                   </div>
                   {errors.lastName && (
-                    <p className="mt-2 text-sm text-red-600">{errors.lastName}</p>
+                    <p className="mt-1 text-sm text-red-600">{errors.lastName}</p>
                   )}
                 </div>
               </div>
 
               {/* Phone */}
-              <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
+              <div className="field-group">
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
                   Phone Number
                 </label>
                 <div className="relative rounded-md shadow-sm">
@@ -267,20 +267,20 @@ export function Signup() {
                     type="tel"
                     value={form.phone}
                     onChange={(e) => handleChange("phone", e.target.value)}
-                    className={`block w-full pl-10 pr-3 py-3 border ${
+                    className={`block w-full pl-8 pr-3 py-2.5 text-sm border ${
                       errors.phone ? 'border-red-300 ring-1 ring-red-300' : 'border-gray-300'
-                    } rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200`}
+                    } rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200`}
                     placeholder="Phone Number"
                   />
                 </div>
                 {errors.phone && (
-                  <p className="mt-2 text-sm text-red-600">{errors.phone}</p>
+                  <p className="mt-1 text-sm text-red-600">{errors.phone}</p>
                 )}
               </div>
 
               {/* Address */}
-              <div>
-                <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">
+              <div className="field-group">
+                <label htmlFor="address" className="block text-sm font-medium text-gray-700">
                   Address
                 </label>
                 <div className="relative rounded-md shadow-sm">
@@ -293,32 +293,32 @@ export function Signup() {
                     type="text"
                     value={form.address}
                     onChange={(e) => handleChange("address", e.target.value)}
-                    className={`block w-full pl-10 pr-3 py-3 border ${
+                    className={`block w-full pl-8 pr-3 py-2.5 text-sm border ${
                       errors.address ? 'border-red-300 ring-1 ring-red-300' : 'border-gray-300'
-                    } rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200`}
+                    } rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200`}
                     placeholder="Address"
                   />
                 </div>
                 {errors.address && (
-                  <p className="mt-2 text-sm text-red-600">{errors.address}</p>
+                  <p className="mt-1 text-sm text-red-600">{errors.address}</p>
                 )}
               </div>
 
-              <div className="pt-8">
+              <div className="button-section">
                 <button
                   type="button"
                   onClick={handleNextStep}
-                  className="w-full flex justify-center py-4 px-6 border border-transparent rounded-xl shadow-sm text-base font-medium text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-200"
+                  className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-200"
                 >
                   Continue
                 </button>
               </div>
             </motion.div>
           ) : (
-            <motion.div className="space-y-6" variants={itemVariants}>
+            <motion.div className="form-section" variants={itemVariants}>
               {/* Email */}
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+              <div className="field-group">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                   Email
                 </label>
                 <div className="relative rounded-md shadow-sm">
@@ -332,20 +332,20 @@ export function Signup() {
                     autoComplete="email"
                     value={form.email}
                     onChange={(e) => handleChange("email", e.target.value)}
-                    className={`block w-full pl-10 pr-3 py-3 border ${
+                    className={`block w-full pl-8 pr-3 py-2.5 text-sm border ${
                       errors.email ? 'border-red-300 ring-1 ring-red-300' : 'border-gray-300'
-                    } rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200`}
+                    } rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200`}
                     placeholder="Email Address"
                   />
                 </div>
                 {errors.email && (
-                  <p className="mt-2 text-sm text-red-600">{errors.email}</p>
+                  <p className="mt-1 text-sm text-red-600">{errors.email}</p>
                 )}
               </div>
 
               {/* Password */}
-              <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+              <div className="field-group">
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                   Password
                 </label>
                 <div className="relative rounded-md shadow-sm">
@@ -358,9 +358,9 @@ export function Signup() {
                     type={showPassword ? "text" : "password"}
                     value={form.password}
                     onChange={(e) => handleChange("password", e.target.value)}
-                    className={`block w-full pl-10 pr-10 py-3 border ${
+                    className={`block w-full pl-8 pr-8 py-2.5 text-sm border ${
                       errors.password ? 'border-red-300 ring-1 ring-red-300' : 'border-gray-300'
-                    } rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200`}
+                    } rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200`}
                     placeholder="Password"
                   />
                   <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
@@ -378,13 +378,13 @@ export function Signup() {
                   </div>
                 </div>
                 {errors.password && (
-                  <p className="mt-2 text-sm text-red-600">{errors.password}</p>
+                  <p className="mt-1 text-sm text-red-600">{errors.password}</p>
                 )}
               </div>
 
               {/* Confirm Password */}
-              <div>
-                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
+              <div className="field-group">
+                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
                   Confirm Password
                 </label>
                 <div className="relative rounded-md shadow-sm">
@@ -397,9 +397,9 @@ export function Signup() {
                     type={showConfirmPassword ? "text" : "password"}
                     value={form.confirmPassword}
                     onChange={(e) => handleChange("confirmPassword", e.target.value)}
-                    className={`block w-full pl-10 pr-10 py-3 border ${
+                    className={`block w-full pl-8 pr-8 py-2.5 text-sm border ${
                       errors.confirmPassword ? 'border-red-300 ring-1 ring-red-300' : 'border-gray-300'
-                    } rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200`}
+                    } rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200`}
                     placeholder="Confirm Password"
                   />
                   <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
@@ -417,15 +417,15 @@ export function Signup() {
                   </div>
                 </div>
                 {errors.confirmPassword && (
-                  <p className="mt-2 text-sm text-red-600">{errors.confirmPassword}</p>
+                  <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>
                 )}
               </div>
 
-              <div className="flex gap-4 pt-8">
+              <div className="flex gap-3 button-section">
                 <button
                   type="button"
                   onClick={() => setStep(1)}
-                  className="flex-1 py-4 px-6 border border-gray-300 rounded-xl shadow-sm text-base font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-200"
+                  className="flex-1 py-2.5 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-200"
                 >
                   Back
                 </button>
@@ -433,7 +433,7 @@ export function Signup() {
                   type="button"
                   onClick={handleSubmit}
                   disabled={isLoading}
-                  className="flex-1 flex justify-center py-4 px-6 border border-transparent rounded-xl shadow-sm text-base font-medium text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-75 transition-all duration-200"
+                  className="flex-1 flex justify-center py-2.5 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-75 transition-all duration-200"
                 >
                   {isLoading ? (
                     <span className="flex items-center">
@@ -448,7 +448,7 @@ export function Signup() {
             </motion.div>
           )}
 
-          <motion.div className="mt-12 text-center" variants={itemVariants}>
+          <motion.div className="text-center footer-section" variants={itemVariants}>
             <p className="text-sm text-gray-600">
               Already have an account?{' '}
               <Link to="/signin" className="font-medium text-purple-600 hover:text-purple-500 transition-colors">
@@ -463,6 +463,16 @@ export function Signup() {
         .bg-pattern {
           background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
+        .form-header { margin-bottom: 2rem; }
+        .form-title { margin-bottom: 1rem; }
+        .form-description { margin-bottom: 1.5rem; }
+        .progress-steps { margin-bottom: 2rem; }
+        .form-section { margin-bottom: 1.5rem; }
+        .field-group { margin-bottom: 1rem; }
+        .button-section { padding-top: 1.5rem; }
+        .footer-section { margin-top: 2rem; }
+        .form-section > * + * { margin-top: 1.5rem; }
+        .field-group > * + * { margin-top: 0.5rem; }
       `}</style>
     </div>
   );

@@ -108,10 +108,10 @@ export function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 via-white to-blue-50">
+    <div className="min-h-screen p-4 flex items-center justify-center bg-gradient-to-br from-purple-50 via-white to-blue-50">
       <div className="absolute top-0 left-0 w-full h-full bg-pattern opacity-5 z-0"></div>
       
-      <div className="grid md:grid-cols-2 gap-0 w-full max-w-6xl bg-white rounded-3xl overflow-hidden shadow-2xl z-10 relative">
+      <div className="grid md:grid-cols-2 gap-0 w-full max-w-4xl h-[700px] bg-white rounded-2xl overflow-hidden shadow-2xl z-10 relative">
         {/* Left Side - Decorative */}
         <div className="hidden md:block relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-purple-600 to-blue-500"></div>
@@ -136,33 +136,33 @@ export function Login() {
         
         {/* Right Side - Form */}
         <motion.div 
-          className="p-10 md:p-16 flex flex-col justify-center"
+          className="p-4 flex flex-col justify-center h-full overflow-y-auto"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
-          <div className="md:hidden flex justify-center mb-8">
-            <img src={images.Logo} alt="Logo" className="h-20 w-auto" />
+          <div className="md:hidden flex justify-center mb-2">
+            <img src={images.Logo} alt="Logo" className="h-10 w-auto" />
           </div>
           
-          <motion.div variants={itemVariants}>
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Welcome Back 👋</h2>
-            <p className="text-gray-600 mb-12 text-lg">Log in to see what's waiting for you</p>
+          <motion.div variants={itemVariants} className="form-header">
+            <h2 className="text-2xl font-bold text-gray-900 form-title">Welcome Back 👋</h2>
+            <p className="text-gray-600 text-sm form-description">Log in to see what's waiting for you</p>
           </motion.div>
 
           {errors.api && (
             <motion.div 
               variants={itemVariants}
-              className="mb-8 bg-red-50 p-6 rounded-xl border border-red-100"
+              className="mb-4 bg-red-50 p-4 rounded-xl border border-red-100"
             >
               <p className="text-sm text-red-600">{errors.api}</p>
             </motion.div>
           )}
 
-          <motion.div className="space-y-8" variants={itemVariants}>
+          <motion.div className="form-section" variants={itemVariants}>
             {/* Email Field */}
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+            <div className="field-group">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                 Email
               </label>
               <div className="relative rounded-md shadow-sm">
@@ -176,20 +176,20 @@ export function Login() {
                   autoComplete="email"
                   value={form.email}
                   onChange={(e) => handleChange('email', e.target.value)}
-                  className={`block w-full pl-10 pr-3 py-3 border ${
+                  className={`block w-full pl-8 pr-3 py-2.5 text-sm border ${
                     errors.email ? 'border-red-300 ring-1 ring-red-300' : 'border-gray-300'
-                  } rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200`}
+                  } rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200`}
                   placeholder="Enter your email"
                 />
               </div>
               {errors.email && (
-                <p className="mt-2 text-sm text-red-600">{errors.email}</p>
+                <p className="mt-1 text-sm text-red-600">{errors.email}</p>
               )}
             </div>
 
             {/* Password Field */}
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+            <div className="field-group">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                 Password
               </label>
               <div className="relative rounded-md shadow-sm">
@@ -203,9 +203,9 @@ export function Login() {
                   autoComplete="current-password"
                   value={form.password}
                   onChange={(e) => handleChange('password', e.target.value)}
-                  className={`block w-full pl-10 pr-10 py-3 border ${
+                  className={`block w-full pl-8 pr-8 py-2.5 text-sm border ${
                     errors.password ? 'border-red-300 ring-1 ring-red-300' : 'border-gray-300'
-                  } rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200`}
+                  } rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200`}
                   placeholder="Enter your password"
                 />
                 <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
@@ -223,11 +223,11 @@ export function Login() {
                 </div>
               </div>
               {errors.password && (
-                <p className="mt-2 text-sm text-red-600">{errors.password}</p>
+                <p className="mt-1 text-sm text-red-600">{errors.password}</p>
               )}
             </div>
 
-            <div className="flex items-center justify-end mb-2">
+            <div className="flex items-center justify-end">
               <Link to="/forgot-password" className="text-sm font-medium text-purple-600 hover:text-purple-500 transition-colors">
                 Forgot your password?
               </Link>
@@ -238,7 +238,7 @@ export function Login() {
                 type="button"
                 onClick={handleSubmit}
                 disabled={isLoading}
-                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-75 transition-all duration-200"
+                className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-75 transition-all duration-200"
               >
                 {isLoading ? (
                   <span className="flex items-center">
@@ -252,7 +252,7 @@ export function Login() {
             </div>
           </motion.div>
 
-          <motion.div className="mt-12" variants={itemVariants}>
+          <motion.div className="button-section" variants={itemVariants}>
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-gray-300" />
@@ -262,10 +262,10 @@ export function Login() {
               </div>
             </div>
 
-            <div className="mt-8">
+            <div className="mt-4">
               <button
                 type="button"
-                className="w-full flex items-center justify-center py-3 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-200"
+                className="w-full flex items-center justify-center py-2.5 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-200"
               >
                 <img src={images.GoogleIcon} alt="Google" className="w-5 h-5 mr-2" />
                 Sign in with Google
@@ -273,7 +273,7 @@ export function Login() {
             </div>
           </motion.div>
 
-          <motion.div className="mt-12 text-center" variants={itemVariants}>
+          <motion.div className="text-center footer-section" variants={itemVariants}>
             <p className="text-sm text-gray-600">
               Don't have an account?{' '}
               <Link to="/register" className="font-medium text-purple-600 hover:text-purple-500 transition-colors">
@@ -288,6 +288,15 @@ export function Login() {
         .bg-pattern {
           background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
+        .form-header { margin-bottom: 2rem; }
+        .form-title { margin-bottom: 1rem; }
+        .form-description { margin-bottom: 1.5rem; }
+        .form-section { margin-bottom: 1.5rem; }
+        .field-group { margin-bottom: 1rem; }
+        .button-section { padding-top: 1.5rem; }
+        .footer-section { margin-top: 2rem; }
+        .form-section > * + * { margin-top: 1.5rem; }
+        .field-group > * + * { margin-top: 0.5rem; }
       `}</style>
     </div>
   );
