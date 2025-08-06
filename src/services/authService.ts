@@ -65,9 +65,12 @@ class AuthService {
   // User login
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
     try {
+      console.log('Login request:', credentials);
       const response = await apiService.post<AuthResponse>('/users/login', credentials);
+      console.log('Login response:', response);
       return response;
     } catch (error: any) {
+      console.error('Login error:', error.response?.data || error.message);
       throw new Error(error.response?.data?.message || 'Login failed');
     }
   }

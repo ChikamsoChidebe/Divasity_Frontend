@@ -7,6 +7,7 @@ import { projectService } from "../../services/projectService";
 import { authService } from "../../services/authService";
 import { Analytics } from "../../components/Advanced/Analytics";
 import { PerformanceChart } from "../../components/Advanced/PerformanceChart";
+import "../../styles/spacing.css";
 
 export function Dashboard() {
   const [activeTab, setActiveTab] = useState("overview");
@@ -98,14 +99,14 @@ export function Dashboard() {
       </div>
 
       <motion.div
-        className="pt-20 md:pt-8 px-3 sm:px-4 lg:px-8 max-w-7xl mx-auto pb-8"
+        className="full-width-container"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
         {/* Hero Section */}
         <motion.div
-          className="mb-12 bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 rounded-3xl overflow-hidden shadow-2xl relative"
+          className="content-section bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 rounded-3xl overflow-hidden shadow-2xl relative"
           variants={itemVariants}
         >
           <div className="absolute inset-0 opacity-20">
@@ -189,10 +190,10 @@ export function Dashboard() {
         </motion.div>
 
         {/* Main Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-8">
+        <div className="grid-container grid-cols-1 lg:grid-cols-3">
           {/* Recent Projects */}
           <motion.div
-            className="lg:col-span-2 bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm border border-gray-100"
+            className="lg:col-span-2 card-container"
             variants={itemVariants}
           >
             <div className="flex justify-between items-center mb-4 sm:mb-6">

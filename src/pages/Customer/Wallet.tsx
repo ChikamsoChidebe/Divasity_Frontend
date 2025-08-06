@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { WalletIntegration } from "../../components/Advanced/WalletIntegration";
+import "../../styles/spacing.css";
 
 interface Asset {
   id: string;
@@ -151,7 +152,7 @@ export function Wallet() {
       </div>
 
       <motion.div
-        className="pt-24 md:pt-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto"
+        className="full-width-container"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -208,7 +209,7 @@ export function Wallet() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              <div className="stats-grid">
                 <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-white/80 text-sm">Available Balance</span>

@@ -80,7 +80,10 @@ export function Login() {
         throw new Error('Invalid response data');
       }
     } catch (error: any) {
-      setErrors({ ...errors, api: error.message || "Login failed. Please try again." });
+      const errorMessage = error.message.includes('Internal Server Error') 
+        ? 'Service temporarily unavailable. Please try again later.'
+        : error.message || "Login failed. Please try again.";
+      setErrors({ ...errors, api: errorMessage });
     } finally {
       setIsLoading(false);
     }

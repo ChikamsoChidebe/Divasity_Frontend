@@ -240,7 +240,7 @@ export default function Profile() {
       </div>
 
       <motion.div
-        className="pt-24 md:pt-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10 pb-24 md:pb-8"
+        className="full-width-container relative z-10"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -386,7 +386,7 @@ export default function Profile() {
         </motion.div>
 
         {/* Enhanced Stats Grid */}
-        <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8" variants={itemVariants}>
+        <motion.div className="stats-grid" variants={itemVariants}>
           {[
             { 
               label: 'Total Invested', 

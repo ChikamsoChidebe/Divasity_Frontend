@@ -4,6 +4,7 @@ import { TabBar } from "../../components/Header/TabBar";
 import { Plus, Grid, List, Search, TrendingUp, Target, Award, Calendar, Users, DollarSign } from "lucide-react";
 import { images } from "../../constants";
 import { motion } from "framer-motion";
+import "../../styles/spacing.css";
 
 export function Projects() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -147,7 +148,7 @@ export function Projects() {
       </div>
 
       <motion.div 
-        className="pt-20 md:pt-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto pb-24 md:pb-8"
+        className="full-width-container"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -164,7 +165,7 @@ export function Projects() {
           </div>
 
           {/* Enhanced Stats Grid */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div className="stats-grid">
             {[
               { label: 'Total Projects', value: stats.totalProjects, icon: <Target size={24} />, color: 'purple' },
               { label: 'Total Invested', value: `$${stats.totalFunding.toLocaleString()}`, icon: <DollarSign size={24} />, color: 'green' },

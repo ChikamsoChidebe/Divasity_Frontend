@@ -5,6 +5,7 @@ import { TabHeader } from '../../components/Header/TabHeader';
 import { AdvancedSearch } from '../../components/Advanced/AdvancedSearch';
 import { ProjectCard } from '../../components/Advanced/ProjectCard';
 import { projectService } from '../../services/projectService';
+import "../../styles/spacing.css";
 
 export function Marketplace() {
   const [projects, setProjects] = useState<any[]>([]);
@@ -134,10 +135,10 @@ export function Marketplace() {
         />
       </div>
 
-      <div className="pt-20 md:pt-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto pb-8">
+      <div className="full-width-container">
         {/* Professional Header */}
         <motion.div 
-          className="mb-12"
+          className="page-header"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
@@ -151,7 +152,7 @@ export function Marketplace() {
           </div>
 
           {/* Enhanced Market Stats */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="stats-grid">
             {[
               { label: 'Active Projects', value: '156', icon: <Target size={24} />, color: 'purple' },
               { label: 'Total Funding', value: '$2.4M', icon: <DollarSign size={24} />, color: 'green' },

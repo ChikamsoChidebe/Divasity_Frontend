@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Theme } from '@radix-ui/themes';
 import '@radix-ui/themes/styles.css';
 import "./App.css";
+import "./styles/spacing.css";
 
 // Create a client
 const queryClient = new QueryClient({

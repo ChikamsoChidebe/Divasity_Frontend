@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import "../../styles/spacing.css";
 
 interface Post {
   id: string;
@@ -130,7 +131,7 @@ export function Posts() {
       </div>
       
       <motion.div 
-        className="pt-24 md:pt-8 px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto"
+        className="full-width-container"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
