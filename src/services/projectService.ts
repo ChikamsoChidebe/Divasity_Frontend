@@ -85,6 +85,39 @@ class ProjectService {
     }
   }
 
+  // Get project reviews/ratings
+  async getProjectReviews(projectId: string): Promise<Array<{
+    id: string;
+    userId: string;
+    rating: number;
+    comment: string;
+    createdAt: string;
+    user: {
+      firstName: string;
+      lastName: string;
+      avatar?: string;
+    };
+  }>> {
+    try {
+      const response = await apiService.get<{ data: any[] }>(`/projects/${projectId}/reviews`);
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error.response?.data?.message || 'Failed to fetch project reviews');
+    }
+  }
+
+  // Add project review
+  async addProjectReview(projectId: string, review: {
+    rating: number;
+    comment: string;
+  }): Promise<void> {
+    try {
+      await apiService.post(`/projects/${projectId}/reviews`, review);
+    } catch (error: any) {
+      throw new Error(error.response?.data?.message || 'Failed to add review');
+    }
+  }
+
   // Create new project
   async createProject(data: CreateProjectData, images?: File[]): Promise<Project> {
     try {
@@ -190,6 +223,51 @@ class ProjectService {
     } catch (error: any) {
       console.warn('Failed to fetch user investments:', error.message);
       return [];
+    }
+  }
+
+  // Get all projects with advanced filtering
+  async getProjectsAdvanced(filters: {
+    category?: string;
+    status?: string;
+    minFunding?: number;
+    maxFunding?: number;
+    location?: string;
+    search?: string;
+    sortBy?: string;
+    page?: number;
+    limit?: number;
+  } = {}): Promise<{ projects: Project[]; total: number; page: number; totalPages: number }> {
+    try {
+      const params = new URLSearchParams();
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value !== '') {
+          params.append(key, value.toString());
+        }
+      });
+
+      const response = await apiService.get<{ projects: Project[]; total: number; page: number; totalPages: number }>(
+        `/projects/advanced?${params.toString()}`
+      );
+      return response;
+    } catch (error: any) {
+      throw new Error(error.response?.data?.message || 'Failed to fetch projects');
+    }
+  }
+
+  // Get project statistics
+  async getProjectStats(projectId: string): Promise<{
+    totalViews: number;
+    totalLikes: number;
+    totalShares: number;
+    conversionRate: number;
+    averageInvestment: number;
+  }> {
+    try {
+      const response = await apiService.get<{ data: any }>(`/projects/${projectId}/stats`);
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error.response?.data?.message || 'Failed to fetch project stats');
     }
   }
 

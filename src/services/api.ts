@@ -12,7 +12,7 @@ class ApiService {
     
     this.api = axios.create({
       baseURL: this.baseURL,
-      timeout: 30000,
+      timeout: 60000, // Increased to 60 seconds
       headers: {
         'Content-Type': 'application/json',
       },
@@ -64,8 +64,15 @@ class ApiService {
   }
 
   async post<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
-    const response = await this.api.post<T>(url, data, config);
-    return response.data;
+    try {
+      const response = await this.api.post<T>(url, data, config);
+      return response.data;
+    } catch (error: any) {
+      if (error.code === 'ECONNABORTED' || error.message.includes('timeout')) {
+        throw new Error('Server is taking too long to respond. The service may be starting up, please try again in a moment.');
+      }
+      throw error;
+    }
   }
 
   async put<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {

@@ -54,7 +54,7 @@ export function Login() {
     return valid;
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (retryCount = 0) => {
     if (!validateForm()) {
       return;
     }
@@ -80,9 +80,23 @@ export function Login() {
         throw new Error('Invalid response data');
       }
     } catch (error: any) {
-      const errorMessage = error.message.includes('Internal Server Error') 
-        ? 'Service temporarily unavailable. Please try again later.'
-        : error.message || "Login failed. Please try again.";
+      let errorMessage = error.message || "Login failed. Please try again.";
+      
+      if (error.message.includes('timeout') || error.message.includes('starting up')) {
+        if (retryCount < 2) {
+          // Auto-retry for timeout errors
+          setTimeout(() => {
+            handleSubmit(retryCount + 1);
+          }, 2000);
+          setErrors({ ...errors, api: `Server is starting up... Retrying (${retryCount + 1}/3)` });
+          return;
+        } else {
+          errorMessage = 'Server is taking too long to respond. Please wait a moment and try again.';
+        }
+      } else if (error.message.includes('Internal Server Error')) {
+        errorMessage = 'Service temporarily unavailable. Please try again later.';
+      }
+      
       setErrors({ ...errors, api: errorMessage });
     } finally {
       setIsLoading(false);
@@ -156,9 +170,17 @@ export function Login() {
           {errors.api && (
             <motion.div 
               variants={itemVariants}
-              className="mb-4 bg-red-50 p-4 rounded-xl border border-red-100"
+              className={`mb-4 p-4 rounded-xl border ${
+                errors.api.includes('Retrying') 
+                  ? 'bg-yellow-50 border-yellow-100' 
+                  : 'bg-red-50 border-red-100'
+              }`}
             >
-              <p className="text-sm text-red-600">{errors.api}</p>
+              <p className={`text-sm ${
+                errors.api.includes('Retrying') 
+                  ? 'text-yellow-600' 
+                  : 'text-red-600'
+              }`}>{errors.api}</p>
             </motion.div>
           )}
 
@@ -239,7 +261,7 @@ export function Login() {
             <div>
               <button
                 type="button"
-                onClick={handleSubmit}
+                onClick={() => handleSubmit()}
                 disabled={isLoading}
                 className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-75 transition-all duration-200"
               >

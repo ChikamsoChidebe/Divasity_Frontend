@@ -10,6 +10,7 @@ import { WalletIntegration } from "../../components/Advanced/WalletIntegration";
 import { HederaWalletConnect } from "../../components/Advanced/HederaWalletConnect";
 import { HederaTransactions } from "../../components/Advanced/HederaTransactions";
 import { HederaTransfer } from "../../components/Advanced/HederaTransfer";
+import { HederaDemo } from "../../components/Advanced/HederaDemo";
 import { useWalletStore } from "../../store/walletStore";
 import "../../styles/spacing.css";
 
@@ -281,6 +282,7 @@ export function Wallet() {
               exit={{ opacity: 0, y: -20 }}
               className="space-y-8"
             >
+              <HederaDemo />
               <HederaWalletConnect 
                 onConnect={(accountId) => setHederaConnection(true, accountId)}
                 onDisconnect={() => disconnectHedera()}
