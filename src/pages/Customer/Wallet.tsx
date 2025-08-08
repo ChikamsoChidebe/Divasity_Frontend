@@ -8,6 +8,8 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { WalletIntegration } from "../../components/Advanced/WalletIntegration";
 import { HederaWalletConnect } from "../../components/Advanced/HederaWalletConnect";
+import { HederaTransactions } from "../../components/Advanced/HederaTransactions";
+import { HederaTransfer } from "../../components/Advanced/HederaTransfer";
 import { useWalletStore } from "../../store/walletStore";
 import "../../styles/spacing.css";
 
@@ -283,6 +285,19 @@ export function Wallet() {
                 onConnect={(accountId) => setHederaConnection(true, accountId)}
                 onDisconnect={() => disconnectHedera()}
               />
+              {hederaConnected && hederaAccountId && (
+                <>
+                  <HederaTransfer 
+                    accountId={hederaAccountId} 
+                    balance={10.5} // This would come from the wallet service
+                    onTransferComplete={() => {
+                      // Refresh balance and transactions
+                      console.log('Transfer completed, refreshing data...');
+                    }}
+                  />
+                  <HederaTransactions accountId={hederaAccountId} />
+                </>
+              )}
               <WalletIntegration userId="user123" />
             </motion.div>
           )}

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Wallet, CheckCircle, AlertCircle, Loader } from 'lucide-react';
+import { Wallet, CheckCircle, AlertCircle, Loader, ExternalLink } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { hederaWalletService, HederaWalletData } from '../../services/hederaWalletService';
 
 interface HederaWalletConnectProps {
   onConnect?: (accountId: string) => void;
@@ -10,7 +11,7 @@ interface HederaWalletConnectProps {
 export function HederaWalletConnect({ onConnect, onDisconnect }: HederaWalletConnectProps) {
   const [isConnected, setIsConnected] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
-  const [accountId, setAccountId] = useState<string>('');
+  const [walletData, setWalletData] = useState<HederaWalletData | null>(null);
   const [error, setError] = useState<string>('');
 
   useEffect(() => {
@@ -19,14 +20,15 @@ export function HederaWalletConnect({ onConnect, onDisconnect }: HederaWalletCon
 
   const checkWalletConnection = async () => {
     try {
-      // Check if HashPack or other Hedera wallet is available
-      if (window.hashconnect) {
-        const savedData = localStorage.getItem('hedera-wallet-data');
-        if (savedData) {
-          const walletData = JSON.parse(savedData);
-          setAccountId(walletData.accountId);
-          setIsConnected(true);
-        }
+      const storedData = hederaWalletService.getStoredWalletData();
+      if (storedData && window.hashconnect) {
+        setWalletData(storedData);
+        setIsConnected(true);
+        
+        // Refresh balance
+        const balance = await hederaWalletService.getAccountBalance(storedData.accountId);
+        const updatedData = { ...storedData, balance };
+        setWalletData(updatedData);
       }
     } catch (err) {
       console.error('Error checking wallet connection:', err);
@@ -38,32 +40,10 @@ export function HederaWalletConnect({ onConnect, onDisconnect }: HederaWalletCon
     setError('');
 
     try {
-      // Check if HashPack is installed
-      if (!window.hashconnect) {
-        throw new Error('HashPack wallet not found. Please install HashPack extension.');
-      }
-
-      // Initialize HashConnect
-      const hashconnect = window.hashconnect;
-      
-      // Request connection
-      const connectionData = await hashconnect.connectToLocalWallet();
-      
-      if (connectionData && connectionData.accountIds && connectionData.accountIds.length > 0) {
-        const primaryAccountId = connectionData.accountIds[0];
-        setAccountId(primaryAccountId);
-        setIsConnected(true);
-        
-        // Save connection data
-        localStorage.setItem('hedera-wallet-data', JSON.stringify({
-          accountId: primaryAccountId,
-          network: connectionData.network || 'testnet'
-        }));
-
-        onConnect?.(primaryAccountId);
-      } else {
-        throw new Error('No accounts found in wallet');
-      }
+      const data = await hederaWalletService.connectWallet();
+      setWalletData(data);
+      setIsConnected(true);
+      onConnect?.(data.accountId);
     } catch (err: any) {
       setError(err.message || 'Failed to connect wallet');
       console.error('Wallet connection error:', err);
@@ -73,10 +53,10 @@ export function HederaWalletConnect({ onConnect, onDisconnect }: HederaWalletCon
   };
 
   const disconnectWallet = () => {
+    hederaWalletService.disconnectWallet();
     setIsConnected(false);
-    setAccountId('');
+    setWalletData(null);
     setError('');
-    localStorage.removeItem('hedera-wallet-data');
     onDisconnect?.();
   };
 
@@ -121,12 +101,19 @@ export function HederaWalletConnect({ onConnect, onDisconnect }: HederaWalletCon
         <div className="space-y-4">
           <div className="p-4 bg-gray-50 rounded-lg">
             <div className="flex items-center justify-between">
-              <div>
+              <div className="flex-1">
                 <p className="text-sm text-gray-600">Connected Account</p>
-                <p className="font-mono text-sm font-medium text-gray-900">{accountId}</p>
+                <p className="font-mono text-sm font-medium text-gray-900">{walletData?.accountId}</p>
                 <p className="text-xs text-gray-500 mt-1">
-                  {formatAccountId(accountId)}
+                  {walletData?.accountId && formatAccountId(walletData.accountId)}
                 </p>
+              </div>
+              <div className="text-right">
+                <p className="text-sm text-gray-600">Balance</p>
+                <p className="text-lg font-semibold text-gray-900">
+                  {walletData?.balance?.toFixed(2) || '0.00'} HBAR
+                </p>
+                <p className="text-xs text-gray-500">{walletData?.network}</p>
               </div>
             </div>
           </div>
@@ -138,8 +125,17 @@ export function HederaWalletConnect({ onConnect, onDisconnect }: HederaWalletCon
             >
               Disconnect
             </button>
-            <button className="flex-1 py-2 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
-              View on Explorer
+            <button 
+              onClick={() => {
+                const explorerUrl = walletData?.network === 'mainnet' 
+                  ? `https://hashscan.io/mainnet/account/${walletData?.accountId}`
+                  : `https://hashscan.io/testnet/account/${walletData?.accountId}`;
+                window.open(explorerUrl, '_blank');
+              }}
+              className="flex-1 py-2 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors flex items-center justify-center space-x-2"
+            >
+              <ExternalLink size={16} />
+              <span>View on Explorer</span>
             </button>
           </div>
         </div>
