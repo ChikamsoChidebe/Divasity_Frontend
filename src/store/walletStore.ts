@@ -41,6 +41,11 @@ interface WalletState {
   error: string | null;
   selectedCurrency: string;
   
+  // Hedera wallet specific
+  hederaConnected: boolean;
+  hederaAccountId: string | null;
+  hederaBalance: number;
+  
   // Actions
   setBalances: (balances: WalletBalance[]) => void;
   setTransactions: (transactions: WalletTransaction[]) => void;
@@ -55,6 +60,11 @@ interface WalletState {
   setError: (error: string | null) => void;
   getTotalBalance: () => number;
   getBalanceByCurrency: (currency: string) => WalletBalance | undefined;
+  
+  // Hedera actions
+  setHederaConnection: (connected: boolean, accountId?: string) => void;
+  setHederaBalance: (balance: number) => void;
+  disconnectHedera: () => void;
 }
 
 export const useWalletStore = create<WalletState>((set, get) => ({
@@ -64,6 +74,9 @@ export const useWalletStore = create<WalletState>((set, get) => ({
   isLoading: false,
   error: null,
   selectedCurrency: 'USD',
+  hederaConnected: false,
+  hederaAccountId: null,
+  hederaBalance: 0,
 
   setBalances: (balances) => set({ balances }),
   
@@ -111,4 +124,17 @@ export const useWalletStore = create<WalletState>((set, get) => ({
     const { balances } = get();
     return balances.find(b => b.currency === currency);
   },
+  
+  setHederaConnection: (connected, accountId) => set({ 
+    hederaConnected: connected, 
+    hederaAccountId: accountId || null 
+  }),
+  
+  setHederaBalance: (balance) => set({ hederaBalance: balance }),
+  
+  disconnectHedera: () => set({ 
+    hederaConnected: false, 
+    hederaAccountId: null, 
+    hederaBalance: 0 
+  }),
 }));

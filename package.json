@@ -14,6 +14,8 @@
     "fix-ts": "node fix-ts-errors.js"
   },
   "dependencies": {
+    "@hashgraph/hedera-wallet-connect": "^1.5.1",
+    "@hashgraph/sdk": "^2.70.0",
     "@iota/dapp-kit": "0.4.1",
     "@iota/iota-sdk": "0.6.0",
     "@radix-ui/themes": "^3.1.1",

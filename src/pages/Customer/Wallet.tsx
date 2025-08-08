@@ -7,6 +7,8 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { WalletIntegration } from "../../components/Advanced/WalletIntegration";
+import { HederaWalletConnect } from "../../components/Advanced/HederaWalletConnect";
+import { useWalletStore } from "../../store/walletStore";
 import "../../styles/spacing.css";
 
 interface Asset {
@@ -36,6 +38,13 @@ export function Wallet() {
   const [balanceVisible, setBalanceVisible] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
   const [transactionFilter, setTransactionFilter] = useState('all');
+  
+  const { 
+    hederaConnected, 
+    hederaAccountId, 
+    setHederaConnection, 
+    disconnectHedera 
+  } = useWalletStore();
 
   const assets: Asset[] = [
     {
@@ -270,6 +279,10 @@ export function Wallet() {
               exit={{ opacity: 0, y: -20 }}
               className="space-y-8"
             >
+              <HederaWalletConnect 
+                onConnect={(accountId) => setHederaConnection(true, accountId)}
+                onDisconnect={() => disconnectHedera()}
+              />
               <WalletIntegration userId="user123" />
             </motion.div>
           )}
